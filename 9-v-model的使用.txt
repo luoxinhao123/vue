@@ -1,0 +1,21 @@
+1. v-model：双向绑定，改变输入框，文本也发生改变     <input type="text" v-model="message">
+2. v-model原理：实质上是两个语法的简写
+    <input type="text" :value="message" @input="message=$event.target.value">    （也可以选择methods方式）
+3. v-model与radio结合
+    <input type="radio" id="male" name="man" value="男" v-model="sex">男    
+    <input type="radio" id="female" name="woman" value="女" v-model="sex">女
+    双向绑定后可以不加name，如果没有绑定必须加name才能保证互斥
+4. v-model与checkbox结合
+    ①单选框    绑定变量的布尔值  <input type="checkbox" id="agreement" v-model="isAgree">同意协议
+    ②复选框    声明一个数组，双向绑定，将复选框中的选项都写进数组中，方便将数据传给后台
+5. v-model与select结合
+    ①选择一个：<select name="abc" v-model="fruit">
+    ②选择多个：<select name="abc" v-model="fruits" multiple>      fruits是一个数组
+6. 值绑定：动态的从后台中接收数据显示出来，需要动态的绑定数组
+    <label v-for="item in originHobbies" :for="item">
+      <input type="checkbox" :value="item" :id="item" v-model="hobbies">{{item}}
+    </label>
+7. 06-v-model修饰符
+    ①修饰符:lazy  作用:不会实时在界面更新数据,按回车或者鼠标未聚焦时更新
+    ②修饰符:number  作用:文本中的内容只能以数字形式出现和传输到后台
+    ③修饰符:trim   作用:将文本两边的空格移除

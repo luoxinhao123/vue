@@ -1,0 +1,190 @@
+1. webpack与grunt/gulp的对比
+    grunt/gulp更加强调的是前端流程的自动化，模块化不是它的核心；
+    webpack更加强调的是模块化开发管理，而文件压缩合并、预处理等功能，是他附带的功能
+2. webpack正常运行需要依赖node环境，node环境包括很多包，为了管理这种包，自带npm工具，所以首先安装node
+3. 安装webpack命令（可指定版本，全局安装）：npm install webpack@4.42.1 -g
+4. webpack的起步
+    ①开发时，一般在src中写代码，其中有多个js文件进行开发，main.js是最基本的，里面有许多其他js文件的依赖，可以使用commonjs的模块化规范或者ES6的模块化规范。
+    ②代码完成后，执行命令webpack ./src/main.js ./dist/bundle.js，将这些js文件通通打包成bundle.js文件
+    ③打包完成后，在index.html中引用打包的js文件，<script src="./dist/bundle.js"></script>
+5. webpack的配置（简化命令）
+    ①当我们在使用webpack ./src/main.js ./dist/bundle.js时，需要有输出输入路径，比较繁琐，可以配置直接使用webpack命令就达到打包效果。
+    ②配置时，新建一个webpack.config.js，需要导出输入路径和输出路径，其中输出路径需要动态获取。
+    ③动态获取输出路径需要用到node中的path包，const path = require('path')；命令：npm init ---> npm install ，第一步需要配置相关信息。
+    ④具体代码
+    const path = require('path')
+
+    module.exports = {
+        entry:'./src/main.js',    //入口
+        // output:'./dist/bundle.js',   //出口
+        output: {
+            //动态的获取路径(两个下划线)
+            path: path.resolve(__dirname,'dist'),
+            filename: 'bundle.js',
+        }
+    }
+    ⑤直接使用命令：webpack，完成打包
+6. webpack的配置（执行本地webpack版本）
+    ①当实际开发时，全局的webpack不一定支持项目的使用，需要使用本地的webpack版本，直接使用webpack命令，使用的是全局的webpack版本。
+    ②需要在package.json的scripts中，添加一行代码："build": "webpack"。
+    ③打包时，输入命令：npm run build，完成局部版本的打包需求。
+    ④局部webpack的安装命令：npm install webpack@3.6.0 --save-dev
+7. webpack的loader（css-loader的使用）
+    css-loader只负责将css文件加载
+    style-loader负责将样式添加到DOM中
+    使用多个loader中，是从右向左进行应用
+    ①安装css-loader和style-loader
+    npm install --save-dev css-loader
+    npm install style-loader --save-dev
+    ②在webpack.config.js的module.exports中进行配置
+    module:{
+        rules:[
+            {
+                test: /\.css$/,
+                // css-loader只负责将css文件加载
+                // style-loader负责将样式添加到DOM中
+                // 使用多个loader中，是从右向左进行应用
+                use: [ 'style-loader', 'css-loader' ]
+            }
+        ]
+    }
+    ③输入命令：npm run build进行打包
+8. webpack的loader（less-loader的使用）
+    ①安装：npm install --save-dev less-loader@4.1.0 less@3.9.0
+    ②配置：在webpack.config.js的module.exports中的module进行配置
+    {
+                test: /\.less$/,
+                use: [{
+                    loader: "style-loader" // creates style nodes from JS strings
+                }, {
+                    loader: "css-loader" // translates CSS into CommonJS
+                }, {
+                    loader: "less-loader" // compiles Less to CSS
+                }]
+            }
+9. webpack的img的加载（url-loader的使用）
+    ①安装：npm install --save-dev url-loader@1.1.2
+    ②当加载的图片小于limit时，会将图片编译成base64字符串形式
+       当加载的图片大于limit时，需要使用file-loader模块进行加载
+       命令：npm install file-loader@3.0.1 --save-dev
+   ③当图片大于limit时，需要将图片文件进行打包，修改配置文件webpack.config.js的output
+    output: {
+        //动态的获取路径(两个下划线)
+        path: path.resolve(__dirname,'dist'),
+        filename: 'bundle.js',
+        publicPath:'dist/'         //使得图片的路径正确
+    }
+    ④为了防止图片打包过后名字过长（由hash直接生成）且不能识别图片，需要将图片放在img文件夹中重新命名
+    修改配置文件webpack.config.js的mudule的use
+    use: [
+                    {
+                        loader: 'url-loader',
+                        options: {
+                            // 当加载的图片小于limit时，会将图片编译成base64字符串形式
+                            // 当加载的图片大于limit时，需要使用file-loader模块进行加载
+                            limit: 8196,
+                            name: 'img/[name].[hash:8].[ext]'        //[name]保留原来的名字；[hash:8]生成8位hash值防止名字重复，[ext]扩展名
+                        },
+                    }
+                ]
+10. 将ES6的语法转换为ES5的语法，使得大多数浏览器都能识别(ie10以下不能识别es6)
+      ①安装：npm install --save-dev babel-loader@7 babel-core babel-preset-es2015 
+      ②配置：在webpack.config.js的module.exports中的module进行配置
+    {
+      test: /\.js$/,
+      exclude: /(node_modules|bower_components)/,
+      use: {
+        loader: 'babel-loader',
+        options: {
+          presets: ['es2015']
+        }
+      }
+    }
+11. webpack配置vue
+      ①安装vue：npm install vue --save
+      ②vue一共有两个版本
+         runtime-only：代码中，不可以有任何的template
+         runtime-compiler：代码中，可以有template，因为有compiler可以用于编译template
+         解决方案：配置webpack.config.js中的module.exports
+         resolve: {
+        alias: {
+            'vue$':'vue/dist/vue.esm.js'
+        }
+      }
+12. 在同时有el和template的情况下，运行时会将template中的内容复制到index.html中
+13. 代码的分离（一）
+      一般情况下，index文件中不会有太多代码，需要进行分离
+      ①直接在main.js中分离
+       主要的代码在template中，const App = { template:`` }
+      new Vue({
+    el: '#app',
+    template:`<App/>`,
+    components:{
+        App
+    }
+})
+      ②新建一个app.js文件进行分离
+      export default:{   }
+      然后在main.js中进行导入：import App from './vue/app'
+14. 代码的分离（二）
+      第三种分离方法：新建一个.vue文件（vue组件），将代码放置其中
+      ①安装：npm install --save-dev vue-loader@15.4.2 vue-template-compiler@2.5.21
+      ②配置：在webpack.config.js的module.exports中的module进行配置
+      {
+                test: /\.vue$/,
+                use: ['vue-loader']
+            }
+      运行后报错，将vue-loader的版本改为13.0.0（或者装上插件）
+      ③省略.vue等后缀名，修改webpack.config.js的module.exports中的module中的resolve
+      extensions:['.js','.css','.vue']
+15. 插件：对现有的某个架构进行扩充，是一个扩展器
+      loader：主要用于转换某些类型的块，是一个转换器或加载器
+16. 横幅plugin的使用
+      在webpack.config.js的module.exports中进行配置
+      const webpack = require('webpack')
+      module.exports = {
+          plugin:[
+              new webpack.BannerPlugin('最终版权归luo所有')
+          ]
+      }
+      完成后在bundle.js中可以显示
+17. html-webpack-plugin插件的使用
+      index.html文件是存放于项目的根目录下的，真是发布项目时，发布的是dist文件夹的内容，但是dist下没有index.html文件
+      将index.html文件打包到dist文件夹中，需要使用到HtmlWebpackPlugin插件
+      ①安装：npm install html-webpack-plugin@3.2.0 --save-dev
+      ②配置：在webpack.config.js的module.exports中进行配置
+      const HtmlWebpackPlugin = require('html-webpack-plugin')
+      运行后会有两个问题：
+      1. 路径中多出了一个dist   解决方法：在webpack.config.js中，注释掉 publicPath:'dist/'
+      2. 不能自动生成<div id="app"></div>    解决方法：new HtmlWebpackPlugin({  template: 'index.html'  })   注：这里的index.html是在根目录下已经配置好的
+18. js压缩的plugin
+      ①安装：npm install uglifyjs-webpack-plugin@1.1.1 --save-dev
+      ②配置：在webpack.config.js的module.exports中进行配置
+       const UglifyjsWebpackPlugin = require('uglifyjs-webpack-plugin')  //引用
+       plugins:[
+        new UglifyjsWebpackPlugin()
+       ]
+19. 搭建本地服务器(测试使用，可实时监控)
+      避免每次修改代码后都需要重新打包
+      ①安装：npm install webpack-dev-server@2.9.3 --save-dev
+      ②配置：在webpack.config.js的module.exports中进行配置
+      devServer: {
+        contentBase: './dist',
+        inline:true
+    }
+      ③运行
+      在package.json中的scripts中添加："dev": "webpack-dev-server --open"     //--open自动打开网页
+      输入命令：npm run dev
+      注：最后所有代码测试完之后，再进行最终的打包，npm run build
+20. webpack配置文件的分离
+      开发时需要的配置和打包时需要的配置不相同，所以需要进行配置文件的分离
+      ①在根目录下创建文件夹build，里面新建三个js文件，base.config.js、dev.config.js(开发)、prod.config.js(生产)
+         将webpack.config.js中的内容全部复制到base.config.js中，注释掉丑化插件和本地服务器搭建；dev.config.js中搭建本地服务器；prod.config.js中包含丑化插件
+      ②合并
+         安装：npm install webpack-merge@4.1.5 --save-dev
+         将base.config.js分别与dev.config.js、prod.config.js进行合并（06-webpack配置分离）
+      ③修改package.json中的build
+         "build": "webpack --config ./build/prod.config.js"
+         "dev": "webpack-dev-server --open --config ./build/dev.config.js"
+      ④修改打包后的路径（dist）
+         修改base.config.js中的path：path: path.resolve(__dirname,'../dist')    // ../去上一次目录里面拼接

@@ -1,0 +1,79 @@
+1. 箭头函数也是一种定义函数的方式
+    ①定义函数的方式：function
+    const aaa = function () {}
+    ②对象字面量中定义函数
+    const obj = {
+        bbb: function () {},
+        bbb() {}
+    }
+    ③ES6中的箭头函数
+    const ccc = (参数列表) => {    }
+2. 箭头函数参数和返回值
+    ①1.参数问题：
+    1.1.多个参数
+    const sum = (num1,num2) => {
+        return num1 + num2
+    }
+    1.2.放入一个参数（一个参数时，小括号可以省略）
+    const power = num => {
+        return num * num
+    }
+    ②返回值
+    2.1.函数代码块中有多行代码时
+    const test = () => {
+        console.log('hello world');
+        console.log('hello Vuejs');
+    }
+    2.2.函数代码块中只有一行代码
+    const mul = (num1,num2) => num1 + num2
+    console.log(mul(20, 30));
+    const demo = () => console.log('hello demo')
+    console.log(demo()); // 返回值：undefined
+3. 箭头函数中this的使用
+    什么时候使用箭头函数？函数用作另一函数的参数时
+    setTimeout(function () {
+        console.log(this)    // 打印的是Window
+    },1000)
+    
+    setTimeout(() => {
+        console.log(this)    // 打印的是Window
+    },1000)
+    
+    问题：箭头函数中的this是如何查找的呢？
+    答案：向外层作用域中，一层层查找this，直到有this的定义。
+    const obj = {
+        aaa(){
+            setTimeout(function () {
+                console.log(this)    // 打印的是Window
+            },1000)
+
+            setTimeout(() => {
+                console.log(this)    // 打印的是obj对象
+            },1000)
+        }
+    }
+
+
+    const obj = {
+        aaa(){
+            setTimeout(function () {
+                setTimeout(function () {
+                    console.log(this)    // 打印的是Window
+                },1000)
+
+                setTimeout(() => {
+                    console.log(this)    // 打印的是Window
+                },1000)
+            },1000)
+
+            setTimeout(() => {
+                setTimeout(function () {
+                    console.log(this)    // 打印的是Window
+                },1000)
+
+                setTimeout(() => {
+                    console.log(this)    // 打印的是obj对象
+                },1000)
+            },1000)
+        }
+    }

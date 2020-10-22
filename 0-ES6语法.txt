@@ -1,0 +1,18 @@
+1. let和var
+    var可以理解为全局变量，没有块级作用域，值可以随时被改变（要添加作用域时，需要用到闭包）
+    let有块级作用域，可理解为局部变量，不能在其他地方被改变
+2. const的使用
+    建议在开发中，优先使用const，只有需要改变某一标识符的时候才用let
+    ①一旦const修饰标识符，不能修改
+    ②在使用const修饰定义标识符时，必须赋值
+    ③常量的含义是指向的对象不能被修改，但是可以改变对象内部的属性
+3. 对象字面量的增强写法
+    ①属性增强写法
+    const name='why'
+    const obj={
+      name,
+    }
+   ②函数增强写法
+    getFullName: function(){}    ->    getFullName()
+4. 借助的两个网站：Github和Stack Overflow
+5. 模块化规范：CommonJS、AMD、CMD、Modules

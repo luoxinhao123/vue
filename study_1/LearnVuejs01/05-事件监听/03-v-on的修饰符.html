@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<div id="app">
+<!--  1. .stop修饰符的使用（阻止事件冒泡）-->
+  <div @click="divClick">
+    good
+    <button @click.stop="btnClick">按钮</button>
+  </div>
+
+<!--  2. .prevent修饰符的使用（阻止默认事件的响应）-->
+  <br>
+  <form action="baidu">
+    <input type="submit" value="提交" @click.prevent="submitClick">
+  </form>
+
+<!--  3. .监听某个键盘的点击事件（回车键的监听）-->
+  <input type="text" @keyup.enter="keyUP">
+
+<!--  4. .once修饰符的使用（只执行一次命令）-->
+  <button @click.once="btn2Click">按钮2</button>
+</div>
+
+<script src="../js/vue.js"></script>
+<script>
+  const app=new Vue({
+    el:'#app',
+    data:{
+      message:'hello!'
+    },
+    methods:{
+      divClick(){
+        console.log("divClick");
+      },
+      btnClick(){
+        console.log("btnClick");
+      },
+      submitClick(){
+        console.log("submitClick");
+      },
+      keyUP(){
+        console.log("keyUP");
+      },
+      btn2Click(){
+        console.log("btn2Click");
+      },
+    }
+  })
+</script>
+</body>
+</html>

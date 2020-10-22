@@ -1,0 +1,23 @@
+1. v-for遍历数组：无索引值遍历：<li v-for="item in names">{{item}}</li>
+                            有索引值遍历：<li v-for="(item,index) in names">{{index+1}}.{{item}}</li>
+2. v-for遍历对象
+    ①在遍历过程中，如果只获取一个值，获取的值是value
+    ②需要获取key和value，格式：（value,key）
+    ③也可以获取索引值，格式：（value,key,index）
+3. v-for使用过程添加key
+    ①如果不使用key，向数组中添加元素时，添加方式：删除再覆盖的形式（类似顺序表）
+    ②如果使用key，向数组中添加元素时，添加方式：直接添加（类似链表）
+    添加元素语法：app.letters.splice(2,0,f)      表示：从第2个位置，删除0个元素，再加入f元素
+4. 哪些数组的方法是响应式的
+    ①push()：在数组最后面添加元素，可以添加多个元素   this.letters.push('a', 'b')
+    ②pop()：删除数组中的最后一个元素   this.letters.pop()
+    ③shift()：删除数组中的第一个元素   this.letters.shift()
+    ④unshift()：在数组最前面添加元素，可添加多个元素   this.letters.unshift('a','b','c')
+    ⑤splice作用：删除元素/替换元素/插入元素
+       删除元素：第二个参数传入你要删除几个元素（如果没有传，就删除后面所有元素）   this.letters.splice(2,1)
+       替换元素：第二个参数，表示我们要替换几个元素，第三个参数是用于替换前面的元素，可替换多个元素   this.letters.splice(2,2,'fca','dop')
+       插入元素：第二个参数传入0，并且后面跟上插入的元素，可插入多个元素   this.letters.splice(1,0,'sip')
+    注意：通过索引值修改数组中的元素不是响应式的
+    修改的方式有以下两中，尽量不使用非响应式的方法
+         ①this.letters.splice(0,1,'fji')
+         ②Vue.set(this.letters,0,'fji')         set(要修改的对象，索引值，修改后的值)

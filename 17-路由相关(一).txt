@@ -1,0 +1,87 @@
+1. 后端路由：后端处理URL和页面之间的映射关系，针对不同的url映射不同的网页，并返回给前端页面
+2. 前后端分离阶段：浏览器中显示的网页中的大部分内容，都是由前端写的js代码在浏览器中执行，最终渲染出来的网页
+3. 前端路由（SPA）：前端管理url和页面组件的映射；核心：url改变，页面不进行整体刷新
+4. 页面跳转不重新请求（刷新）：
+    history.pushState：直接到指定页面，可将其理解为栈
+    history.replaceState：直接跳转，没有浏览记录
+    history.back：返回
+    history.go(-1) = history.back   (负几就弹出几个)
+    history.go(1) = history.foward
+5. 配置路由步骤
+    首先需要创建脚手架
+    命令：vue init webpack 项目名称 或 vue create 项目名称
+    ①通过Vue.use(插件)，安装插件
+    import Vue from 'vue'     //导入vue
+    Vue.use(VueRouter)
+    ②创建VueRouter对象
+    const router = new VueRouter({
+    // 配置路由和组件之间的映射关系
+    routes,
+    })
+    ③将router对象传入Vue实例
+    export default router
+    在main.js中：
+    import router from './router/index'    //index可以省略
+    new Vue({
+      el: '#app',
+      router,
+      render: h => h(App),
+    }).$mount('#app')
+6. 配置映射关系
+    ①创建路由组件
+    例：新建home.vue和about.vue
+    并在template中写内容
+    ②配置映射关系（在index.js中）
+    首先导入组件
+    import home from "../components/home"
+    import about from "../components/about"
+    再配置映射关系
+    const routes = [
+        {
+          path:'',
+          redirect:'/home'         
+        },          //默认首页
+        {
+        path: '/home',
+        component: home
+        },
+        {
+            path: '/about',
+            component: about
+        }
+    ]
+    ③在App.vue中写标签
+    <template>
+      <div id="app">
+        <router-link to="/home">首页</router-link>
+        <router-link to="/about">关于</router-link>
+        <router-view></router-view>         //占位
+      </div>
+    </template>
+7. 去掉路径中的＃（不使用hash模式）
+    const router = new VueRouter({
+    // 配置路由和组件之间的映射关系
+    routes,
+    mode:'history'    //切换成history模式
+    })
+8. 默认进入首页
+    const routes = [
+    {
+      path:'',
+      redirect:'/home'    //重定向
+    },
+    ]
+9. router-link（自动渲染成a标签）组件的补充
+    ①to属性：用于指定跳转的路径；
+    ②tag属性：将a标签转换成其他标签，如button，<router-link to="/home" tag="button">首页</router-link>
+    ③replace属性：进行页面切换时默认使用pushState方法（可以返回前进），如果使之不能使用返回，则使用replace属性，不用附加任何值，<router-link to="/home" replace>首页</router-link>
+    ④active-class属性：当点击路径按钮时，自动会出现一个router-link-active的class（用于之后改变颜色等），设置active-class可以修改默认的名称
+      简写：可以在路由配置index.js里面直接修改
+      const router = new VueRouter({
+    routes,
+    mode:'history'    //切换成history模式
+    linkActiveClass：'active'      //将默认的router-link-active改为active
+    })
+10. 通过代码的方式修改路径 vue-router
+      button绑定方法，方法中加上：this.$router.push('/home')   //可以返回
+                                                     this.$router.replace('/home')    //不能返回

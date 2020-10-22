@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<div id="app">
+  <!--  最普通写法，性能最差-->
+<!--  <h2>{{firstName + ' ' + lastName}}</h2>-->
+
+  <!--methods写法，多次调用，缓存较高，处理不简洁-->
+  <h2>{{getFullName()}}</h2>
+  <h2>{{getFullName()}}</h2>
+  <h2>{{getFullName()}}</h2>
+  <h2>{{getFullName()}}</h2>
+  <!--  computed 计算属性写法，变量值未发生变化时，只调用一次-->
+  <h2>{{fullName}}</h2>
+  <h2>{{fullName}}</h2>
+  <h2>{{fullName}}</h2>
+  <h2>{{fullName}}</h2>
+</div>
+
+<script src="../js/vue.js"></script>
+<script>
+  const app=new Vue({
+    el:'#app',
+    data:{
+      firstName:'Emma',
+      lastName:'Stone'
+    },
+    methods: {
+      getFullName(){
+        console.log('getFullName');
+        return this.firstName + ' ' + this.lastName
+      }
+    },
+    computed:{
+      fullName:function () {
+        console.log('fullName');
+        return this.firstName + ' ' + this.lastName
+      }
+    }
+  })
+</script>
+</body>
+</html>

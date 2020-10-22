@@ -1,0 +1,21 @@
+1. slot-插槽的基本使用
+    ①插槽的基本使用<slot></slot>：在template中添加插槽标签
+    ②插槽的默认值：在template里面的slot标签中写下默认元素
+    ③使用组件时，如果写了多个元素，将一起被替换掉
+2. slot-具名插槽的使用：在使用slot标签时，将插槽进行命名；在使用组件时添加slot的名字，便可以做到具体替换哪一个标签
+    <span slot="center">标题</span>
+    <slot name="center"><span>中间</span></slot>
+3. 编译作用域：在Vue实例中的模块的命令遵循vue实例中的数据信息；在子组件中的模块命令遵循子组件中的数据信息
+4. 作用域插槽：在父作用域中改变子组件的样式，但是数据依然使用子组件的数据
+    ①<slot :abc="planguages">
+      <ul>
+        <li v-for="item in planguages">{{item}}</li>
+      </ul>
+    </slot>
+    将planguages数据绑定到abc中
+    ②<cpn>
+    <template slot-scope="slotdata">
+      <span v-for="item in slotdata.abc">{{item}} - </span>
+    </template>
+  </cpn>
+    利用slot-scope定义一个变量，这个变量可以控制之前存有子组件数据的abc，调用abc以达到改变样式的目的

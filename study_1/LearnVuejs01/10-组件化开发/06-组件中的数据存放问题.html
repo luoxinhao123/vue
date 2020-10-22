@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<div id="app">
+  <cpn></cpn>
+</div>
+
+<template id="cpn">
+  <div>
+    <h2>{{title}}</h2>
+    <p>内容哈哈哈哈hehehee</p>
+  </div>
+</template>
+
+<script src="../js/vue.js"></script>
+<script>
+  // 注册一个全局组件
+  // 要想动态的改变组件中的数据,需要在组件内部定义data,且data必须是一个函数
+  Vue.component('cpn',{
+    template: `#cpn`,
+    data(){
+      return{
+        title: 'abc'
+      }
+    }
+  })
+  //组件中不能直接使用Vue中的data
+  const app=new Vue({
+    el:'#app',
+    data:{
+      message:'hello!',
+      title:'abc'
+    }
+  })
+</script>
+</body>
+</html>

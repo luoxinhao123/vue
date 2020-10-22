@@ -1,0 +1,9 @@
+1. 后端路由：后端处理URL和页面之间的映射关系，针对不同的url映射不同的网页，并返回给前端页面
+2. 前后端分离阶段：浏览器中显示的网页中的大部分内容，都是由前端写的js代码在浏览器中执行，最终渲染出来的网页
+3. 前端路由（SPA）：前端管理url和页面组件的映射；核心：url改变，页面不进行整体刷新
+4. 页面跳转不重新请求（刷新）：
+    history.pushState：直接到指定页面，可将其理解为栈
+    history.replaceState：直接跳转，没有浏览记录
+    history.back：返回
+    history.go(-1) = history.back   (负几就弹出几个)
+    history.go(1) = history.foward

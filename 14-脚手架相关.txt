@@ -1,0 +1,58 @@
+1. 安装脚手架：npm install -g @vue/cli
+    拉取脚手架2的模板：npm install @vue/cli-init -g
+2. 创建项目（不含中文）
+    脚手架2：vue init webpack 项目名称（文件夹名词）
+    脚手架3：vue creat 项目名称
+3. 创建项目时相关配置
+    project name：一般与文件夹相同，直接默认回车
+    project description：描述信息
+    author：作者
+    Vue bulid：选择Runtime+Compiler（更全） 或者 Runtime-only（更轻、效率更高）
+    Install vue-router：一般选择安装路由
+    Use ESlint to lint your code：ESlint(对js代码进行一些限制)，强行规范代码，若不规范则报错。如果选择yes，有多种规范（Standard或Airbnb）可供选择或自己制定
+    Set up unit tests：单元测试（相对较少）
+    Setup e2e tests with Nightwatch：端到端测试，安装Nightwatch，是一个利用selenium或webdrive或phantomjs等进行自动化测试的框架
+    使用npm还是yarm：一般使用npm
+4. vue cli2的配置文件
+    先读package.json中的build和dev
+    build,config中的js文件都是配置文件
+    src：开发时写代码的文件夹
+    static：存储静态资源，里面的东西原封不动的复制到dist里面
+    .babelrc：浏览器的适配
+    .editorconfig：对代码风格进行统一
+    .eslintignore：对代码不规范的地方进行忽略
+    .eslintrc：检测代码
+    .gitignore：忽略不必要上传的文件
+    .postcssrc.js：进行css转换时配置的文件，一般不做修改
+    index.html：模板
+    package.json：配置
+    package-lock.json：package.json版本前面的符号（~或^）表示版本有出入，真实安装的版本在package-lock.json中
+    README.md：文档
+5. 选择ESlint创建文件后关闭
+    config --> index.js -->useEslint: false
+6. runtime-compiler和runtime-only的区别
+    只在main.js上有区别
+    ①runtime-compiler（template的工作实质）：template -> ast -> render -> virtual dom -> 真实dom
+    ②runtime-only：render -> virtual dom -> UI
+    ③比较结论：runtime-only性能更高，源代码量更少
+7. render函数
+    ①普通用法
+     creatElement('标签',{标签的属性},['标签的内容'])
+     return createElement('h2',{class:'box'},['hello world'])
+    ②传入组件对象
+       return createElement(cpn)
+8. 那么.vue文件中的template是由谁处理的呢？
+    是由vue-template-compiler，将template解析成render函数
+9. vue cli3（4）的配置文件
+    public：相当于static，里面的东西原封不动的复制到dist里面
+    src：开发时写代码的文件夹
+    .browserslistrc：浏览器相关
+    .gitignore：忽略不必要上传的文件
+    package.json：配置
+    package-lock.json：package.json版本前面的符号（~或^）表示版本有出入，真实安装的版本在package-lock.json中
+    README.md：文档
+    main.js：$mount('#app') 等价于 el: '#app'
+10. vue cli3中修改配置
+      ①输入命令：vue ui
+      ②node_modules -> @vue -> cli-service -> webpack.config.js -> service.js(lib)
+      ③当前目录创建vue.config.js，修改相关配置

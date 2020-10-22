@@ -1,0 +1,88 @@
+1. 动态路由
+    ①创建路由时（index.js中）
+     {
+        path: '/user/:userId',
+        component: user
+      }
+    ②动态绑定
+    <router-link v-bind:to="'/user/'+userId">用户</router-link>
+    data(){
+    return{
+      userId:'zhangsan'
+    }
+  }
+    ③显示
+    <h3>{{$route.params.userId}}</h3>
+2. vue-router打包文件的解析
+    打包后的dist里面有css, js两个文件夹，其中js文件夹中有三个js文件
+    ①app
+    当前应用程序开发的所有代码（自己写的所有代码）
+    ②vendor（第三方，例如vue/vue-router/axios/bs）
+    第三方相关的分离到vendor包
+    ③manifest
+    为了打包的代码做底层支撑（比如模块化中的commonjs）
+3. 懒加载：用到时再进行加载
+    为什么用到懒加载？
+    打包构建应用时，js包会变得很大，影响页面加载，可能会出现短暂空白情况。
+    懒加载实质：将路由打包成对应的Js文件，页面请求某个路由时，只加载对应的路由js文件。
+    实现懒加载代码：const Home = () => import('../components/Home.vue')
+4. 路由嵌套：大路径（组件）下嵌套一些小路径（组件）
+    例如：在首页上嵌套两个路由
+    path: '/home',
+    component: Home,
+    children: []      //路由嵌套
+    在Home.vue中：
+    <router-link to="/home/news">新闻</router-link>
+    <router-link to="/home/message">消息</router-link>
+    <router-view></router-view>
+5. URL：
+    协议://主机:端口/路径?查询(query)#片段
+    scheme://host:port/path?query#fragment
+6. 参数传递
+    App.vue中：
+    <router-link v-bind:to="{path: '/profile',query:{name:'why',age:18,height:1.88}}">档案</router-link>
+    Profile.vue中：
+    <h2>{{$route.query.name}}</h2>
+    <h2>{{$route.query.age}}</h2>
+    <h2>{{$route.query.height}}</h2>
+7. 参数传递（button）
+    <button @click="userClick">用户</button>
+    <button @click="profileClick">档案</button>
+     userClick() {
+      this.$router.push('/user/' + this.userId)
+    },
+    profileClick() {
+      this.$router.push({
+        path: '/profile',
+        query: {
+          name: 'kobe',
+          age: 18,
+          height: 1.87
+        }
+      })
+    }
+8. $route和$router的区别
+    $router为VueRouter实例，想要导航到不同URL，则使用$router.push方法
+    $route为当前router跳转对象里面可以获取name、path、query、params等
+9. 导航守卫
+    监听全局跳转（改变页面的标题）
+    全局守卫：router.beforeEach、router.afterEach
+    ①给所有页面赋上标题的属性（index.js）
+    path: '/home',
+    component: Home,
+    meta: {
+      title: '首页'
+    }
+    ②在index.js中添加：
+router.beforeEach((to, from, next) => {
+  // 从from跳到to
+  document.title = to.matched[0].meta.title
+  next()
+})
+10. keep-alive
+      keep-alive是Vue内置的一个组件，可以使被包含的组件保留状态，或避免重新渲染
+      activated，和deactivated函数只能在有keep-alive时才能使用
+      属性：
+      include：字符串或正则表达式，只有匹配的组件会被缓存
+      exclude：字符串或正则表达式，任何匹配的组件都不会被缓存
+      <keep-alive exclude="Profile,User">    // Profile,User被排除在外（逗号中间不加空格）

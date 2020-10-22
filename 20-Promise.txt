@@ -1,0 +1,107 @@
+1. 文件起别名
+    避免路径过多过长，可以给文件起别名
+    在webpack.base.conf.js中：
+    '@': resolve('src'),
+    'assets': resolve('@/assets'),
+    使用的时候前面不用加路径，直接assets就能找到对应文件（在src中需要使用~assets）
+2. Promise
+    Promise是异步编程的一种解决方案，链式编程思想
+    new Promise((resolve, reject) => {
+    // 第一次网络请求
+      setTimeout(() => {
+        resolve()
+      },1000)
+    }).then(() => {
+      //100行处理代码
+
+      // 第二次网络请求
+      new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve()
+      },1000)
+    })
+
+    new Promise((resolve, reject) => {
+      setTimeout(() => {
+        // 成功的情况
+        // resolve('hello world')
+
+      //  失败的时候调用reject
+        reject('error message')
+      },1000)
+    }).then((data) => {
+      //1. 100行代码
+      console.log(data);
+      console.log(data);
+      console.log(data);
+      console.log(data);
+    }).catch((err) => {
+      console.log(err);     //失败后无论中间有多少then都不调用，直接调用catch
+    })
+3. then()里面同时传入两个函数，成功时和拒绝时函数
+    new Promise((resolve, reject) => {
+     setTimeout(() => {
+       resolve('hello world')
+       reject('error message')
+     },1000)
+   }).then(data => {
+     console.log(data);
+   }, err => {
+     console.log(err);
+   })
+4. Promise的简写
+    new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve('aaa')
+      },1000)
+    }).then(res => {
+      // 1.自己处理10行代码
+      console.log(res, '第一层的10行处理代码');
+
+      // 2.对结果进行第一次处理（简写）
+      // return Promise.resolve(res + '111')
+      return Promise.reject('error message')    //发生错误信息return error时
+      // throw 'error message'  //直接手动抛出错误信息
+    }).then(res => {
+      console.log(res, '第二层的10行代码');
+
+      return Promise.resolve(res + '222')
+    }).then((res) => {
+      console.log(res, '第三层的10行处理代码');
+    }).catch((err) => {
+      console.log(err);
+    })
+5. Promise的进一步简写（针对resolve）
+    new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve('aaa')
+      },1000)
+    }).then(res => {
+      // 1.自己处理10行代码
+      console.log(res, '第一层的10行处理代码');
+
+      // 2.对结果进行第一次处理（简写）
+      return res + '111'
+    }).then(res => {
+      console.log(res, '第二层的10行代码');
+
+      return res + '222'
+    }).then((res) => {
+      console.log(res, '第三层的10行处理代码');
+    })
+6. Promise.all()的使用
+    当某一次需求需要发送两次请求才能完成，就可以使用Promise对其进行一次包装
+    Promise.all([
+      new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve('result1')
+        },2000)
+      }),
+      new Promise((resolve, reject) => {
+        setTimeout(() => {
+          resolve('result2')
+        },1000)
+      })
+    ]).then(results => {
+      console.log(results);
+    })

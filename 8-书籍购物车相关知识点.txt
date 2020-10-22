@@ -1,0 +1,31 @@
+1. 过滤器：可以理解为给文本设置一种样式
+    filters:{
+    showPrice(price){
+      return '￥'+price.toFixed(2)
+    }
+    <h2 >{{totalPrice | showPrice}}</h2>   使用|符号将过滤器使用进去
+2. button的属性——disabled：当disabled=true时，button按钮不能进行交互，显示为灰色
+    动态绑定button属性： :disabled="item.count<=1    表示小于等于1时，不能交互
+3. 计算总价tatalPrice时，尽量使用计算属性computed
+4. for(let i in this.books)  找出对象数组中的每一项的索引，通过索引值完成操作
+5. for(let i of this.books)   找出对象数组中的每一项并命名item，通过item直接完成操作
+6. 高阶函数filter
+    理解：过滤数组中符合条件的并新建一个数组
+    filter中的回调函数有一个要求：必须返回布尔值
+    true：当返回true时，函数内部会自动将这次回调的n加入新的数组
+    false：当返回false时，函数的内部会自动过滤掉这次的n
+    let newNums = nums.filter(function (n) {
+    return n<100
+    })
+7. 高阶函数map
+    理解：找到数组中的每一项并进行相应的操作
+    let new2Nums = newNums.map(function (n) {
+    return n * 2
+    })
+8. 高阶函数reduce
+    理解：将数组中的每一项做一个汇总，例如相乘或相加
+    let total = new2Nums.reduce(function (prevalue,n) {
+    return prevalue + n
+    },0)
+    两个参数：一个函数，一个初始值；函数中有两个参数，一个代表之前的值，另一个代表现在的值
+9. 注意：高阶函数的使用代表函数式编程

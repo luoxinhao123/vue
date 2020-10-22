@@ -1,0 +1,25 @@
+1. 导出方式
+    ①export {flag, sum}
+    ②export var num1=1000;
+    ③导出函数
+     export function mul(num1,num2) {
+  return num1 * num2
+}
+    ④导出类
+    export class Person {
+  run(){
+    console.log('在奔跑');
+  }
+}
+    ⑤export default（不使用模块化文件的命名，引用时自己进行命名）
+    const address = '重庆市'
+    export default address
+2. 导入方式
+    ①import {flag} from "./aaa.js";（适用于上面①②③④）
+    ②export default
+    import addr from  "./aaa.js"
+    console.log(addr);
+    适用于上面⑤
+    ③统一导入 
+    import * as aaa from "./aaa.js"
+    console.log(aaa.flag);

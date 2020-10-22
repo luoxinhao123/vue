@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
+<body>
+<div id="app">
+<!--  绑定父组件中的数据,达到父组件向子组件传递数据的功能-->
+  <cpn :cmovies="movies" :cmessage="message"></cpn>
+</div>
+
+<template id="cpn">
+  <div>
+    <!--遍历cmovies-->
+    <ul>
+      <li v-for="item in cmovies">{{item}}</li>
+    </ul>
+    <h2>{{cmessage}}</h2>
+  </div>
+</template>
+
+<script src="../js/vue.js"></script>
+<script>
+
+  const cpn = {
+    template:`#cpn`,
+    // props:['cmovies','cmessage']
+    props: {
+      // 1.类型限制
+      cmovies: Array,     //只允许传入数组变量
+      cmessage: String    //只允许传入字符变量
+
+      // 2.提供一些默认值,以及要求是否必须传入数据
+      // cmessage:{
+      //   type: String,
+      //   default: 'aaaaa',
+      //   required: true    //为true时表明必须传入cmessage的数据
+      // }
+    }
+  }
+
+  const app=new Vue({
+    el:'#app',
+    data:{
+      message:'hello!',
+      movies:['鬼子来了','阳光灿烂的日子','太阳照常升起','让子弹飞']
+    },
+    components:{
+      cpn   //对象增强写法
+    }
+  })
+</script>
+</body>
+</html>

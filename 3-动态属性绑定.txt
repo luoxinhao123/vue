@@ -1,0 +1,7 @@
+1. v-bind：避免写死，动态的请求数据      <img v-bind:src="imgURL">   <img :src="imgURL">
+2. v-bind的动态绑定：class里面添加多种类，用变量控制布尔值，变量在data中赋值，固定变量不会覆盖其他变量      
+    <h2 class="title" :class="{active:isActive,line:isLine}">{{message}}</h2>
+    可将多个类形成函数，避免过于冗长
+3. v-bind动态绑定style：style里面的样式例如color,font-size的属性值都可以用变量控制，变量在data中赋值
+    <h2 :style="{fontSize:finalSize+'px',color:finalColor}">{{message}}</h2>
+    可将多个类形成函数，避免过于冗长

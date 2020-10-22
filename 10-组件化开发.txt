@@ -1,0 +1,112 @@
+1. 组件的使用步骤
+    ①创建组件构造器
+    需要用到一些函数   
+  const cpnC = Vue.extend({
+    template: `
+      <div>
+      <h2>标题</h2>
+      <p>内容15622</p>
+      <p>啊哈哈哈哈</p>
+      </div>`
+  })
+    引号使用Tab上面的键盘··
+    ②注册组件
+    Vue.component('my-cpn',cpnC)
+    ③使用组件
+    <my-cpn></my-cpn>
+2. 全局组件和局部组件
+    全局组件：可以在多个Vue实例下面使用    Vue.component('my-cpn',cpnC)
+    局部组件：只能在该Vue下面使用，直接挂载到Vue实例中（平常开发中只会有一个Vue实例，一般使用局部组件）
+    const app=new Vue({
+    el:'#app',
+    data:{
+      message:'hello!'
+    },
+    components:{
+      // cpn:使用组件时的标签名
+      cpn: cpnC
+    }
+  })
+3. 父组件与子组件
+    子组件挂载到父组件中，父组件挂载到root组件中，如果要在Vue中使用子组件，需要将子组件也挂载到root组件中
+4. 语法糖
+    ①全局注册语法糖
+    Vue.component('cpn1',{
+    template:`
+      <div>
+        <h2>标题1</h2>
+        <p>内容1哈哈哈哈哈哈</p>
+      </div>
+    `
+  })
+    ②局部注册语法糖
+    components:{
+      'cpn2':{
+        template:`
+          <div>
+            <h2>标题2</h2>
+            <p>内容2嘻嘻嘻嘻</p>
+          </div>
+    `,
+      }
+    }
+5. 组件模板的分离写法
+    ①script标签：类型必须是text/x-template      <script type="text/x-template" id="cpn">
+    ②template标签：      <template id="cpn">
+    使用方法（以全局为例）：
+  Vue.component('cpn',{
+    template: `#cpn`
+  })
+6. 组件中的数据存放：组件中不能直接使用Vue中的data，要想动态的改变组件中的数据,需要在组件内部定义data,且data必须是一个函数
+Vue.component('cpn',{
+    template: `#cpn`,
+    data(){
+      return{
+        title: 'abc'
+      }
+    }
+  })
+7. 组件需要复用，用函数能够保证数据的相异,不会引起连锁反应，所以组件模板中需要动态改变数据时，在组件实例中使用data函数而不是对象
+8. 组件通信-父组件向子组件传递数据
+    步骤：
+    ①在父组件中从后台获取数据
+    ②定义子组件，以及子组件的模板，并挂载到父组件中
+    ③使用props，在子组件中定义变量，用于存储数据
+    props:['cmovies','cmessage']
+    ④使用子组件，并动态绑定父组件中的数据到props的变量里面，完成组件通信
+    <cpn :cmovies="movies" :cmessage="message"></cpn>
+    ⑤修改模板template，完成界面要求
+9. props对象的使用
+    ①类型限制
+    cmovies: Array,     //只允许传入数组变量
+    cmessage: String    //只允许传入字符变量
+    ②提供一些默认值,以及要求是否必须传入数据
+      cmessage:{
+        type: String,
+        default: aaaaaa,
+        required: true    //为true时表明必须传入cmessage的数据
+10. props中绑定父组件变量时，不能识别驼峰标识，需要使用短横线，例如：c-movies，不能使用cMovies
+11. 组件通信-子传父（自定义事件）
+      步骤：
+      ①在子组件中获取数据
+      ②定义子组件，以及子组件模板，并挂载到父组件中
+      ③在模板中定义要传送到父组件中的事件，并在子组件中利用$emit自定义事件发送到父组件中
+  methods:{                                                         
+    btnClick(item){                                                 
+      this.$emit('item-click',item)                                 
+    }                                                               
+  }                                                                 
+}                                                                   
+      ④在div中绑定自定义事件，并在父组件中定义自定义事件引起的方法
+12. 组件访问-父访问子(children和refs）
+      ①$children
+      this.$children这个语法访问的是全部的children，如果有多个子组件，children是一个数组的形式，需要具体访问methods、data等数据后面加上.；需要具体访问某一个子组件时使用this.$children[x]
+      ②$refs
+      this.$refs这个语法访问时需要在组件标签中使用ref属性并命名，便可具体访问某一个组件，如：this.$refs.aaa，aaa便是子组件ref属性的命名
+      注意：在开发中，大量使用$refs，尽量不使用$children
+13. 组件访问-子访问父（parent和root）
+      ①$parent
+      this.$parent这个语法用于访问父组件中的数据、方法等
+      ②$root
+      this.$root这个语法用于访问根组件中的数据、方法等
+      注意：为了保证组件有较强的复用性，$parent非常少使用，使用之后子组件与父组件耦合度增加，不利于复用

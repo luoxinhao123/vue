@@ -1,0 +1,133 @@
+1. 状态管理：可以简单的将其看成把需要多个组件共享的变量全部存储在一个对象里面
+2. Vuex管理的状态
+    需要在多个界面共享的状态
+    比如：用户的登录状态、用户名称、头像、地理位置等；商品的收藏、购物车的物品等。
+3. state：状态，可以简单理解为data中的属性
+    view：视图图层，针对state的变化，显示不同信息
+    actions：主要是指用户的各种操作，例如：点击、输入等
+4. 安装Vuex插件
+    命令：npm install vuex --save
+    再参照之前安装插件的步骤进行使用
+5. 注册：
+    const store = new Vuex.Store({
+      state: {
+        counter: 100
+      },
+    }）
+    使用：
+    <h2>{{$store.state.counter}}</h2>
+    vuex如果需要修改相关内容，需要按照规定格式进行修改
+    修改流程：Vue Components -> Actions -> Mutations -> State -> Vue Components
+    Actions：同步操作可以不经过这一步进行修改，异步操作如网络请求则需要
+    Mutations：记录修改，需要经过这个步骤进行修改，有Devtools这个插件，可以跟踪数据的修改
+6. 通过Mutations进行修改
+    index.js：
+    mutations: {
+    // 方法
+    increment() {
+      this.state.counter++
+    },
+    decrement() {
+      this.state.counter--
+    },
+  }
+    App.vue（通过Mutation更新）：
+    methods: {
+      addition() {
+        this.$store.commit('increment')
+      },
+      subtraction() {
+        this.$store.commit('decrement')
+      }
+    }
+7. Vuex的核心概念——State
+    State：保存状态相关信息；单一状态树：只推荐使用一个store，比较方便后期的维护和管理
+8. Vuex的核心概念——Getters
+    Getters：从store拿数据时，如果数据需要进行变换（如平方等）才能得到的，需要在getters进行变化，然后通过getters拿到
+    getters可以返回一个值，也可以返回一个函数
+    more20stu(state) {
+      return state.students.filter(s => s.age >= 20)
+    },
+     moreAgeStu(state) {
+      return function (age) {
+        return state.students.filter(s => s.age >= age)
+      }
+    }
+9. Vuex的核心概念——Mutation
+    Vuex的store状态的更新唯一方式：提交Mutation
+    increment() {
+      this.state.counter++
+    }
+    increment：事件类型；() {this.state.counter++} ：回调函数
+    ①
+    1.传入一个参数的情况(参数不止一个则可以传入一个对象)：参数被称为mutation的载荷（Payload）
+    需求：动态的给数字+5，+10
+    index.js：
+    incrementCount(state,count) {
+      state.counter += count
+    }
+    App.vue：
+    <button @click="addCount(5)">+5</button>
+    <button @click="addCount(10)">+10</button>
+    addCount(count) {
+        this.$store.commit('incrementCount',count)    //传入count参数
+      }
+    2.mutation的提交风格
+    addCount(count) {
+        // 1.普通提交封装
+         this.$store.commit('incrementCount',count)
+
+        // 2.特殊提交封装
+        this.$store.commit({
+          type: 'incrementCount',
+          count
+        })
+      },
+    第二种提交风格提交的是一个对象payload，使用时：
+    incrementCount(state,payload) {
+      state.counter += payload.count
+    },
+    ②数据的响应式原理
+      在state里面定义的属性，都会被加入到响应式系统中，而响应式系统会监听属性的变化，当属性发生变化时，会通知所有界面中用到该属性的地方，让界面发生刷新
+      updateInfo(state) {
+      // state.info.name = 'codewhy'
+      state.info['address'] = '洛杉矶'    //新增一个address属性，界面不发生刷新，因为不是在store里面定义的
+    }
+      如果想要其变为响应式：
+      Vue.set(state.info, 'address', '洛杉矶')  //响应式
+      删除：
+      // delete state.info.age  //删除数据，非响应式
+      Vue.delete(state.info, 'age')   //删除数据，响应式
+    ③mutation常量类型
+    首先新建一个js文件导出：export const INCREMENT = 'increment'
+    然后再需要用到的地方导入：
+    import {
+      INCREMENT
+    } from "./mutations-types";
+    最后进行使用
+    [INCREMENT](state){ }
+    this.$store.commit(INCREMENT)
+10. Vuex的核心概念——Action
+      Action：类似mutation，但用来进行异步的相关操作，增加一个action环节
+      index.js：
+    actions: {
+    aUpdateInfo(context, payload) {
+      return new Promise((resolve, reject) => {
+        setTimeout(() => {
+          context.commit('updateInfo')
+          console.log(payload);
+          resolve('111')
+        },1000)
+      })
+    }
+  }
+      App.vue：
+      this.$store
+          .dispatch('aUpdateInfo', '我是携带的信息')
+          .then(res => {
+            console.log('里面完成了提交');       //返回了一个promise，可以在后面接上一个then，进行异步操作
+            console.log(res);
+          })
+11. Vuex的核心概念——Module
+      module：为了避免state里面的数据比较臃肿，将state里面的数据按模块划分，每个模块有同样的state、getters、mutation、action
+      
