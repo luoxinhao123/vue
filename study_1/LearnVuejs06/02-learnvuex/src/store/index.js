@@ -59,8 +59,11 @@ const store = new Vuex.Store({
       state.students.push(stu)
     },
     updateInfo(state) {
+      // 一开始就在state里面定义的属性，都会被加入响应式系统中，而响应式系统会监听属性的变化，当属性发生变化时，
+      // 会通知所有界面中用到该属性的地方，让界面发生刷新
+
       state.info.name = 'codewhy'   //同步，响应式
-      // state.info['address'] = '洛杉矶'   //非响应式
+      // state.info['address'] = '洛杉矶'   //非响应式（后面添加的，没有加入响应式系统中）
       // Vue.set(state.info, 'address', '洛杉矶')  //响应式
       // delete state.info.age  //删除数据，非响应式
       // Vue.delete(state.info, 'age')   //删除数据，响应式
@@ -99,6 +102,7 @@ const store = new Vuex.Store({
     more20stuLength(state,getters) {
       return getters.more20stu.length
     },
+    // 年龄大于age，其他传过来的age，不写死
     moreAgeStu(state) {
       return function (age) {
         return state.students.filter(s => s.age >= age)
