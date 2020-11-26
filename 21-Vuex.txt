@@ -130,4 +130,32 @@
           })
 11. Vuex的核心概念——Module
       module：为了避免state里面的数据比较臃肿，将state里面的数据按模块划分，每个模块有同样的state、getters、mutation、action
-      
+      ①本质上modules被放在了state里面，例子：$store.state.a.name
+      ②模块里面的mutations和store里面的mutations不能重复，使用mutations和getters时都与store的操作一样
+      ③在模块里面使用getters时，可以填入三个参数：
+      fullName3(state, getters, rootState){
+      return getters.fullName2 + rootState.counter   //拿到store里面state的counter
+    }
+      ④在模块中使用actions：
+actions: {
+    aUpdateName(context) {
+      setTimeout(() => {
+        context.commit('updateName', 'wangwu')   //这里的context不再指代store对象，而是模块里面的mutations
+      }, 1000)
+    }
+  }
+12. 对象的解构
+const obj = {
+  name: 'why',
+  age: 18,
+  height: 1.88,
+  address: '洛杉矶'
+}
+const {name, height, age} = obj
+13. vuex-store文件夹的目录组织
+      ①state依然放在index.js种
+      ②mutations抽出放到新建的mutations.js中
+      ③getters抽出放到新建的getters.js中
+      ④actions抽出放到新建的actions.js中
+      ⑤在store新建文件夹modules，文件夹中可放多个模块，例如在modules文件夹中新建moduleA.js文件，将moduleA中的内容放在其中
+      最后，在index.js中导入这些抽离出去的文件
