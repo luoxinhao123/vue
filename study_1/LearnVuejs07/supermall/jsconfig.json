@@ -1,0 +1,18 @@
+{
+  "compilerOptions": {
+      "target": "ES6",
+      "module": "commonjs",
+      "allowSyntheticDefaultImports": true,
+      "baseUrl": "./",
+      "paths": {
+        "assets/*": ["@/assets/*"],
+        "common/*": ["@/common/*"],
+        "components/*": ["@/components/*"],
+        "network/*": ["@/network/*"],
+        "views/*": ["@/views/*"],
+      }
+  },
+  "exclude": [
+      "node_modules"
+  ]
+}

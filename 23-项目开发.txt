@@ -1,0 +1,14 @@
+1. 新项目流程
+    ①划分目录结构
+    src -> assets/components/views/router/store/network/common
+    assets ->image/css : 主要放一些资源文件
+    components -> common(跟项目无关的完全公共的组件，可以多项目使用)/content(和业务相关的公共组件): 一般放公共的组件
+    views -> category/home: 主要的组件 
+    router: 路由
+    store: vuex，仓库
+    network：网络相关
+    common：公共的js文件，比如一些常量文件
+    ②引用两个css文件
+    ③配置文件
+    配置vue.config.js（路径相关）；复制.editorconfig
+    ④项目的模块划分：tabbar -> 路由映射关系
