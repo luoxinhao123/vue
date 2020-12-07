@@ -12,3 +12,6 @@
     ③配置文件
     配置vue.config.js（路径相关）；复制.editorconfig
     ④项目的模块划分：tabbar -> 路由映射关系
+    ⑤网络模块封装
+    1. 网络封装，request.js
+    2. 新建home.js，首页的所有网络请求放在这里，便于查找和管理
