@@ -15,3 +15,6 @@
     ⑤网络模块封装
     1. 网络封装，request.js
     2. 新建home.js，首页的所有网络请求放在这里，便于查找和管理
+2. UI库
+    mint-ui
+    iview
