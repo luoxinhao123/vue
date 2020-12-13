@@ -3,7 +3,10 @@
     <h2>-------APP内容：modules中的内容--------</h2>
     <h2>{{$store.state.a.name}}</h2>
     <button @click="updateName">修改名字</button>
-    <h2>{{$store.state.getters.fullNameA}}</h2>
+    <h2>{{$store.getters.fullName}}</h2>
+    <h2>{{$store.getters.fullName2}}</h2>
+    <h2>{{$store.getters.fullName3}}</h2>
+    <button @click="asyncUpdataName">异步修改名字</button>
 
     <h2>-------APP内容：info对象的内容是否是响应式的--------</h2>
     <h2>{{$store.state.info}}</h2>
@@ -88,6 +91,9 @@
       },
       updateName() {
         this.$store.commit('updateName', 'lisi')
+      },
+      asyncUpdataName() {
+        this.$store.dispatch('aUpdateName')
       }
     }
   }

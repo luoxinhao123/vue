@@ -2,8 +2,10 @@
     拉取脚手架2的模板：npm install @vue/cli-init -g
 2. 创建项目（不含中文）
     脚手架2：vue init webpack 项目名称（文件夹名词）
-    脚手架3：vue creat 项目名称
-3. 创建项目时相关配置
+    脚手架3：vue create 项目名称
+3. 
+    ①
+    创建项目时相关配置
     project name：一般与文件夹相同，直接默认回车
     project description：描述信息
     author：作者
@@ -13,6 +15,17 @@
     Set up unit tests：单元测试（相对较少）
     Setup e2e tests with Nightwatch：端到端测试，安装Nightwatch，是一个利用selenium或webdrive或phantomjs等进行自动化测试的框架
     使用npm还是yarm：一般使用npm
+    ②vue-cli4的相关配置
+    选项	                                                             解释
+    Babel	                                                             一种能让浏览器自动识别向后兼容各版本JavaScript的功能（选）
+    TypeScript	                                             一种.ts后缀兼容js的语法（不选）
+    Progressive Web App（PWA）Support           渐进式网络应用（不选）
+    Router	                                                             vue的路由管理组件（选）
+    Vuex	                                                             vue的状态仓库管理组件（选）
+    CSS Pre-processors	                             CSS预编译（可选）
+    Linter/Formatter	                                             代码检验 格式检查（不选）
+    Unit Testing	                                             单元测试 以开发角度测试代码（不选）
+    E2E Testing	                                             e2e测试 以用户角度测试代码（不选）
 4. vue cli2的配置文件
     先读package.json中的build和dev
     build,config中的js文件都是配置文件

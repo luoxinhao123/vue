@@ -1,0 +1,66 @@
+1. 如果遇到跨域问题，可以使用JSONP
+2. 使用axios进行网络请求（基本使用）
+axios({
+  url: 'http://123.207.32.32:8000/home/multidata',  //默认使用get请求
+  method: ''     //method定义请求方式
+}).then(res => {
+    console.log(res);
+})
+// axios.get(),axios.post()    也可以使用这种格式
+  params: {           // 专门针对get请求的参数拼接
+    type: 'pop',
+    page: 1
+  }
+3. axios发送并发请求
+axios.all([axios({
+  url: 'http://152.136.185.210:7878/api/m5/home/multidata'
+}), axios({
+  url: 'http://152.136.185.210:7878/api/m5/home/data',
+  params: {
+    type: 'sell',
+    page: 5
+  }
+})])
+4. 全局配置
+    axios.defaults.baseURL = 'http://152.136.185.210:7878/api/m5'
+    axios.defaults.timeout = 5000
+    使用时：url: '/home/multidata'
+    注意：
+    ①get请求对应params
+    ②post请求对应data
+5. 减少对第三方框架的依赖，不过度使用框架，需要自己进行封装
+    在src下创建文件夹network，network下创建request.js，进行网络请求的封装
+    import axios from 'axios'
+
+    export function request(config) {
+      const instance = axios.create({
+          baseURL: 'http://152.136.185.210:7878/api/m5',
+          timeout: 5000
+      })
+    
+      // 发送真正的网络请求
+      return instance(config)   //create返回的直接就是promise，所以可以直接返回
+  }
+6. 拦截器
+    // 2. axios的拦截器
+  instance.interceptors.request.use(
+    config => {
+    //   console.log(config);
+    //   2.1 请求拦截的作用
+    // 1. 比如config中的一些信息不符合服务器的要求
+    // 2. 比如每次发送网络请求时，都希望在界面中显示一个请求的图标
+    // 3. 某些网络请求（比如登录（token）），必须携带一些特殊的信息
+      return config
+    },
+    err => {
+    //   config.log(err);
+    }
+  );
+
+//   2.2 响应拦截
+  instance.interceptors.response.use(res => {
+    //   console.log(res);
+    return res.data
+  }, err => {
+      console.log(err)
+  })
