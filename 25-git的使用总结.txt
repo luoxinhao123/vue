@@ -1,0 +1,36 @@
+1. 登陆(一般只需操作一次)
+    git config --global user.name "luoxinhao"
+    git config --global user.email "luoxinhao999@qq.com"
+    git config --global 参数，有了这个参数，表示你这台机器上所有的Git仓库都会使用这个配置，当然你也可以对某个仓库指定的不同的用户名和邮箱。
+2. 创建版本库（普通创建法，一般只许操作一次）
+    ①cd到相应的文件夹中
+    ②Initialized empty Git repository in d:/vue/.git/
+3. 远程仓库（一般只需操作一次）
+    ①创建SSH Key
+       ssh-keygen -t rsa –C “luoxinhao999@.com”
+       通过这个命令，生成两个文件id_rsa和id_rsa.pub，id_rsa.pub是公钥，可以告诉任何人，id_rsa是私钥，不能泄露。
+    ②登录github,打开” settings”中的SSH Keys页面，然后点击“Add SSH Key”,填上任意title，在Key文本框里黏贴id_rsa.pub文件的内容，点击 Add Key，你就应该可以看到已经添加的key。
+    ③添加远程仓库：登录github上，然后在右上角找到“create a new repo”创建一个新的仓库，仓库最好与本底仓库同名
+       根据github提示，运行命令：git remote add origin https://github.com/vue.git
+    ④git push -u origin master   //把本地分支master内容推送到元仓库去，并把本底的master和远程的master进行关联
+4. 添加和提交（每次修改都会涉及）
+    ①git add xxx.txt     //添加一个
+       git add .        //全部添加  （一般只会用前两个命令）
+       git status     //查看是否还有文件未提交
+       git diff xxx.txt    //查看修改部分
+    ②git commit -m "第一次提交"    //提交以及提交备注
+5. 版本回退（偶尔使用）
+    ①git log     //查看历史提交记录，可以看到近三次记录
+       git reflog    //查看历史版本号
+    ②git reset --hard HEAD^      git reset --hard HEAD^^       //回退到上一个版本或上上一个版本
+       git reset -hard HEAD~100     //回退到前100个版本
+       git reset --hard 6fcfc89     //回退到具体某个版本号
+6. 撤销修改（偶尔使用）
+    ①git checkout -- xxx.txt       //在工作区做的修改全部撤销
+       这种撤销会出现两种情况：1)xxx.txt自动修改后，还没有放到暂存区，使用撤销修改就回到和版本库一模一样的状态。2)另外一种是xxx.txt已经放入暂存区了，接着又作了修改，撤销修改就回到添加暂存区后的状态。
+7. 删除文件（偶尔使用）
+    ①直接从文件夹里面删除
+    ②删除后并未commit，则可以恢复
+       恢复：git checkout -- xxx.txt
+8. 远程克隆（偶尔使用）
+    git clone git remote add origin https://github.com/vue
